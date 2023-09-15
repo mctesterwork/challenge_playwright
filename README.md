@@ -1,2 +1,2 @@
 # Tech First Automation Challenge
-Note: When you pull the proyect, you can set your own credentials in the fixtures/credentials.json file, and then run the SignUp.spec.ts automated test so you can register your account through website API
+Note: When you pull the proyect, you can set your own credentials in the fixtures/credentials.json file, and then run the SignUp.spec.ts automated test so you can register your account through website API. That should generate the playwright/.auth/user.json file which will store session information for all your tests, and will be used for the global authentication test (auth.ts) that runs before each other test.
