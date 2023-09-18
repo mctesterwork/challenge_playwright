@@ -21,27 +21,10 @@ test('Test adding contacts from the UI', async ({ page }) => {
 
 test('Test adding contacts from the API', async ({ page }) => {
   const contactList = new ContactListPage(page);
-  const newContact = await contactList.createRandomUser();
-  const newAPIContext = page.request;
-  const response = await newAPIContext.post('https://thinking-tester-contact-list.herokuapp.com/contacts', {
-    data: 
-    {
-      firstName: newContact.firstName,
-      lastName: newContact.lastName,
-      birthdate: newContact.birthday,
-      email: newContact.email,
-      phone: newContact.phone,
-      street1: newContact.street1,
-      street2: newContact.street2,
-      city: newContact.city,
-      stateProvince: newContact.state,
-      postalCode: newContact.zipCode,
-      country: newContact.country
-    }})
-  console.log(response.status);
+  const contactNames = await contactList.AddContactAPI(1);
   await contactList.goto();
-  
-  const newContactFullName = newContact.firstName + ' ' + newContact.lastName;
-  const newContactRow = await page.getByText(newContactFullName);
-  await expect(newContactRow.isVisible()).toBeTruthy()
+  for await (const name of contactNames) {
+    const newContactRow = await page.getByText(name);
+    await expect(newContactRow.isVisible()).toBeTruthy();
+  }
 });
