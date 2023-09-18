@@ -100,7 +100,7 @@ export class ContactListPage {
           postalCode: newContact.zipCode,
           country: newContact.country
         }})
-        if (response.status() < 300)
+        if (response.ok())
         {
           const newContactFullName = newContact.firstName + ' ' + newContact.lastName;
           contactNames.push(newContactFullName);
@@ -181,6 +181,27 @@ export class ContactListPage {
     }
     
     return contactNameList;
+  }
+
+  async deleteContactAPI(num: number): Promise<string[]> {
+    const deletedNames:string[] = [];
+    const newAPIContext = this.page.request;
+    // API request to get all contacts and save as json
+    let response = await newAPIContext.get('https://thinking-tester-contact-list.herokuapp.com/contacts');
+    const allContactsJson = await response.json();
+    // Look for the first contact and delete it
+    for(let i=0; i<num;i++)
+    {
+      const contactID: string = allContactsJson[i]._id;
+      const contactFullName: string = allContactsJson[i].firstName + ' ' + allContactsJson[i].lastName;
+      response = await newAPIContext.delete('https://thinking-tester-contact-list.herokuapp.com/contacts/'+contactID)
+      if(response.ok())
+      {
+        // Here I log once I confirm the response is positive
+        deletedNames.push(contactFullName);
+      }
+    }
+    return deletedNames;
   }
 
   async searchContact(searchQuery: string): Promise<Locator> {
