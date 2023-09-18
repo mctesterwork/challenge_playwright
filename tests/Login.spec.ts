@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import { LoginPage } from './Pages/LoginPage.page';
 
 test('Test login from the UI', async ({ page }) => {

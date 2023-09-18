@@ -78,6 +78,37 @@ export class ContactListPage {
   return contactNames;
   }
 
+  async AddContactAPI(num: number): Promise<string[]> {
+    let contactNames: string[] = [];
+    for(let i=0;i<num;i++)
+    {
+        // Our block of code to repeat
+        const newContact = await this.createRandomUser();
+        const newAPIContext = this.page.request;
+        const response = await newAPIContext.post('https://thinking-tester-contact-list.herokuapp.com/contacts', {
+        data: 
+        {
+          firstName: newContact.firstName,
+          lastName: newContact.lastName,
+          birthdate: newContact.birthday,
+          email: newContact.email,
+          phone: newContact.phone,
+          street1: newContact.street1,
+          street2: newContact.street2,
+          city: newContact.city,
+          stateProvince: newContact.state,
+          postalCode: newContact.zipCode,
+          country: newContact.country
+        }})
+        if (response.status() < 300)
+        {
+          const newContactFullName = newContact.firstName + ' ' + newContact.lastName;
+          contactNames.push(newContactFullName);
+        }
+    }
+    return contactNames;
+  }
+
   async createRandomUser() {
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
@@ -150,5 +181,10 @@ export class ContactListPage {
     }
     
     return contactNameList;
+  }
+
+  async searchContact(searchQuery: string): Promise<Locator> {
+    const element = this.page.locator("xpath=//tr[@class='contactTableBodyRow']", {hasText: searchQuery});
+    return element;
   }
 }
