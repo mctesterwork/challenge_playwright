@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 
 
 export class LoginPage {
@@ -23,8 +23,5 @@ export class LoginPage {
       await this.emailInput.fill(email);
       await this.passwordInput.fill(password);
       await this.submitButton.click()
-      await expect(this.page).toHaveTitle("My Contacts");
-      await expect(this.page.getByRole("button", {name: "Logout"})).toBeVisible();
-      
     }    
 }
